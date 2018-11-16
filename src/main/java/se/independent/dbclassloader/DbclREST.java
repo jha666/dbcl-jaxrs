@@ -23,7 +23,7 @@ public class DbclREST  {
 	private Log log = new Log(DbclREST.class, Level.FINE, this);
 
 
-	private static final String DBCL_JNDI = "jdbc/rest-dbcl-h2-ds";
+	private static final String DBCL_JNDI = "jdbc/dbcl-ds";
 
 
 	private DataSourceDbClassLoader dbcl = null; 
