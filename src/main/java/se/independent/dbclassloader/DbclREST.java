@@ -23,18 +23,25 @@ public class DbclREST  {
 	private Log log = new Log(DbclREST.class, Level.FINE, this);
 
 
-	private static final String DBCL_JNDI = "jdbc/dbcl-ds";
+	//private static final String DBCL_URL = "jdbc/dbcl-ds";
+	private static final String DBCL_URL = "bolt://localhost:7687";
+	private static final String DBCL_PROPS = "user=neo4j";
 
 
-	private DataSourceDbClassLoader dbcl = null; 
-	
+	//private DataSourceDbClassLoader dbcl = null; 
+	private Neo4jDbClassLoader dbcl = null;
+	private Properties p = new Properties();
 		
 	public DbclREST() {	
 		super();
 
+	
 		log.info("> DbclREST()");
-		dbcl = new DataSourceDbClassLoader();
-		dbcl.connect(DBCL_JNDI, new Properties());
+		//dbcl = new DataSourceDbClassLoader();
+		dbcl = new Neo4jDbClassLoader();
+		//dbcl.connect(DBCL_URL, new Properties());
+		p.setProperty("user", "neo4j");
+		dbcl.connect(DBCL_URL, p);
 		dbcl.prepare();
 		dbcl.setClasspathName("rest"); // not used
 		log.info("< DbclREST()");
@@ -51,7 +58,7 @@ public class DbclREST  {
 		log.debug("> ping()");
 		StringBuilder sb = new StringBuilder();
 		sb.append("timestamp").append("=").append(System.currentTimeMillis()).append("\n");	
-		sb.append("jndi").append("=").append(DBCL_JNDI).append("\n");
+		sb.append("jndi").append("=").append(DBCL_URL).append("\n");
 		if (dbcl != null) {
 			sb.append("dbcl").append("=").append(dbcl.ping()).append("\n");
 		}
