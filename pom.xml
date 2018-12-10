@@ -78,7 +78,7 @@
         <dependency>
         	<groupId>se.independent</groupId>
         	<artifactId>dbcl</artifactId>
-        	<version>PA3</version>
+        	<version>PB1</version>
         </dependency>
         
         	<dependency>
