@@ -1,6 +1,9 @@
 package se.independent.dbclassloader;
 
 import java.io.File;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -23,13 +26,10 @@ public class DbclREST  {
 	private Log log = new Log(DbclREST.class, Level.FINE, this);
 
 
-	//private static final String DBCL_URL = "jdbc/dbcl-ds";
-	private static final String DBCL_URL = "bolt://localhost:7687";
-	private static final String DBCL_PROPS = "user=neo4j";
+	private static final String DBCL_URL = "jdbc/dbcl-ds";
 
-
-	//private DataSourceDbClassLoader dbcl = null; 
-	private Neo4jDbClassLoader dbcl = null;
+	private DataSourceDbClassLoader dbcl = null; 
+	
 	private Properties p = new Properties();
 		
 	public DbclREST() {	
@@ -37,13 +37,10 @@ public class DbclREST  {
 
 	
 		log.info("> DbclREST()");
-		//dbcl = new DataSourceDbClassLoader();
-		dbcl = new Neo4jDbClassLoader();
-		//dbcl.connect(DBCL_URL, new Properties());
-		p.setProperty("user", "neo4j");
+		dbcl = new DataSourceDbClassLoader();
 		dbcl.connect(DBCL_URL, p);
 		dbcl.prepare();
-		dbcl.setClasspathName("rest"); // not used
+		dbcl.setClasspathName("jax-rs"); // not used
 		log.info("< DbclREST()");
 	}
 
@@ -57,13 +54,16 @@ public class DbclREST  {
 	public Response ping() {
 		log.debug("> ping()");
 		StringBuilder sb = new StringBuilder();
-		sb.append("timestamp").append("=").append(System.currentTimeMillis()).append("\n");	
+		sb.append("timestamp").append("=").append(System.currentTimeMillis());	
+		sb.append(" (").append(ZonedDateTime.now( ZoneOffset.UTC ).format( DateTimeFormatter.ISO_INSTANT )).append(")\n");	
 		sb.append("jndi").append("=").append(DBCL_URL).append("\n");
 		if (dbcl != null) {
 			sb.append("dbcl").append("=").append(dbcl.ping()).append("\n");
 		}
 		sb.append("java.vendor").append("=").append(System.getProperty("java.vendor")).append("\n");
 		sb.append("java.version").append("=").append(System.getProperty("java.version")).append("\n");
+		sb.append("java.vm.name").append("=").append(System.getProperty("java.vm.name")).append("\n");
+		sb.append("java.vm.vendor").append("=").append(System.getProperty("java.vm.vendor")).append("\n");
 		sb.append("os.arch").append("=").append(System.getProperty("os.arch")).append("\n");
 		sb.append("os.name").append("=").append(System.getProperty("os.name")).append("\n");
 		Response rv = Response.ok(sb.toString()).build() ; 
