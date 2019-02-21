@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -34,13 +36,12 @@ public class DbclREST  {
 		
 	public DbclREST() {	
 		super();
-
 	
 		log.info("> DbclREST()");
 		dbcl = new DataSourceDbClassLoader();
 		dbcl.connect(DBCL_URL, p);
 		dbcl.prepare();
-		dbcl.setClasspathName("jax-rs"); // not used
+		dbcl.setClasspathName("default"); // not used
 		log.info("< DbclREST()");
 	}
 
@@ -51,9 +52,13 @@ public class DbclREST  {
 	@GET
 	@Path("/ping")
     @Produces(MediaType.TEXT_PLAIN)
-	public Response ping() {
+	public Response ping(@Context HttpServletRequest req) {
 		log.debug("> ping()");
 		StringBuilder sb = new StringBuilder();
+		sb.append("rest=").append(req.getScheme()).append("://").append(req.getServerName())
+		.append(":").append(req.getServerPort())
+		.append(req.getServletContext().getContextPath())
+		.append(req.getServletPath()).append("\n");
 		sb.append("timestamp").append("=").append(System.currentTimeMillis());	
 		sb.append(" (").append(ZonedDateTime.now( ZoneOffset.UTC ).format( DateTimeFormatter.ISO_INSTANT )).append(")\n");	
 		sb.append("jndi").append("=").append(DBCL_URL).append("\n");
@@ -123,7 +128,6 @@ public class DbclREST  {
     }
 
 	
-	
 	// =======================================================================
 	// PathParam flavour
 	//------------------------------------------------------------------------
@@ -172,5 +176,17 @@ public class DbclREST  {
 		log.info("< getResource() = [" + rv.getStatus() +"]");
 		return rv;
     }
-
+	
+	//	@POST
+	//	@Path("/importJar")
+	//	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	//	@Produces(MediaType.TEXT_PLAIN)
+	//	public Response importJar(
+	//		@FormDataParam("file") InputStream uploadedInputStream,
+	//		@FormDataParam("file") FormDataContentDisposition fileDetail) {
+	//
+	//
+	//		return Response.status(200).entity(fileDetail.getType()).build();
+	//
+	//	}
 }
