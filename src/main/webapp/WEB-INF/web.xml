@@ -9,7 +9,7 @@
          <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
          <init-param>
             <param-name>javax.ws.rs.Application</param-name>
-            <param-value>se.independent.dbclassloader.DbclApplication</param-value>
+            <param-value> se.independent.dbclassloader.DbclApplication </param-value>
          </init-param>
       </servlet>
 
