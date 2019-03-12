@@ -174,7 +174,7 @@ public class DbclREST  {
 		StringBuilder sb = new StringBuilder();
 		DbClassLoader dbcl = dictionary.get(name);
 		if (dbcl != null) {
-			sb.append(Integer.toHexString(dbcl.hashCode()));
+			sb.append(dbcl.ping());
 		}
 		
 		log.info("< read()");
