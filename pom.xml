@@ -25,11 +25,11 @@
             <plugin>
 		        <groupId>se.independent</groupId>
 		        <artifactId>dbcl-maven-plugin</artifactId>
-		        <version>0.0.1</version>
+		        <version>0.0.2</version>
                 <configuration>
-                    <jdbcURL>jdbc:h2:tcp://127.0.0.1//opt/h2-data/dbcl</jdbcURL>
-                    <driverURL>jar:file:/c:/Users/jha/h2-1.4.196.jar!/</driverURL>
-                    <driverClass>org.h2.Driver</driverClass>
+                    <jdbcURL>jdbc:sqlite:C:/Users/jha/dbcl-sqlite.db</jdbcURL>
+                    <driverURL>jar:file:/c:/Users/jha/sqlite-jdbc-3.27.2.1.jar!/</driverURL>
+                    <driverClass>org.sqlite.JDBC</driverClass>
                     <dbUser>DBCLASSLOAD</dbUser>
                     <dbPasswd>Tr1ss</dbPasswd>
                 </configuration>
@@ -69,6 +69,10 @@
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
         </dependency>
+        <dependency>
+    		<groupId>org.glassfish.jersey.media</groupId>
+    		<artifactId>jersey-media-multipart</artifactId>
+		</dependency>
         <!-- uncomment this to get JSON support
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
@@ -78,16 +82,19 @@
         <dependency>
         	<groupId>se.independent</groupId>
         	<artifactId>dbcl</artifactId>
-        	<version>PB1</version>
+        	<version>PB2</version>
         </dependency>
-        
-        	<dependency>
-       <groupId>org.glassfish.jersey.inject</groupId>
-       <artifactId>jersey-hk2</artifactId>
-       <version>2.26</version>
-   	</dependency>
-   	
+       
+ 		<dependency>
+    		<groupId>javax.servlet</groupId>
+    		<artifactId>javax.servlet-api</artifactId>
+    		<version>3.1.0</version>
+    		<scope>provided</scope>
+		</dependency>
+ 
     </dependencies>
+
+    
     <properties>
         <jersey.version>2.27</jersey.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
