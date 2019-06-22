@@ -120,7 +120,7 @@ public class DbclREST  {
 			
 			dictionary.put(name, dbcl);
 		}
-		log.info("< inser()");
+		log.info("< insert()");
 		return Response.status(200).entity(Integer.toHexString(dbcl.hashCode())).build();
     }
 	
